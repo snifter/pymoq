@@ -1,4 +1,6 @@
+class Mock(object):
+    def run(self):
+        pass
 
-class Example(object):
-    def add(self, a, b):
-        return a + b
+    def stop(self):
+        pass
