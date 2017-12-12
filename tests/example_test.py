@@ -9,7 +9,6 @@ class PyMoqDirectUsageTestCase(unittest.TestCase):
 
     def test_404_not_found_if_not_configured(self):
         mock = pymoq.Mock()
-        mock.run()
 
         urls = [
             'http://localhost:8080/books/',
@@ -17,7 +16,7 @@ class PyMoqDirectUsageTestCase(unittest.TestCase):
             'http://localhost:8080/books/2/adnotations',
         ]
 
-        try:
+        with mock.run():
             for url in urls:
                 try:
                     response = requests.get(url)
@@ -25,5 +24,3 @@ class PyMoqDirectUsageTestCase(unittest.TestCase):
                     self.fail(ex)
 
                 self.assertEqual(response.status_code, 404)
-        finally:
-            mock.stop()
