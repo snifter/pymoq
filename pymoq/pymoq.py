@@ -1,7 +1,9 @@
 from contextlib import contextmanager
-from http import HTTPStatus
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import HTTPServer
 from threading import Thread
+
+from pymoq.handler import MockRequestHandlerFactory
+from pymoq.stub import RequestStub
 
 
 class Mock(object):
@@ -9,22 +11,25 @@ class Mock(object):
     port = 8080
 
     def __init__(self):
-        server_address = ('', self.port)
-        server = HTTPServer(server_address, MockRequestHandler)
-        self.serverThread = ServerThread(server)
+        self.stubs = []
 
     @contextmanager
     def run(self):
-        self.serverThread.start()
+        handlerClass = MockRequestHandlerFactory(self.stubs).create_handler_class()
+        server_address = ('', self.port)
+        server = HTTPServer(server_address, handlerClass)
+        serverThread = ServerThread(server)
+        serverThread.start()
         try:
             yield
         finally:
-            self.serverThread.stop()
+            serverThread.stop()
 
+    def create_stub(self, url):
+        stub = RequestStub(url)
+        self.stubs.append(stub)
 
-class MockRequestHandler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        self.send_error(HTTPStatus.NOT_FOUND)
+        return stub
 
 
 class ServerThread(Thread):

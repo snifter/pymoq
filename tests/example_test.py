@@ -24,3 +24,22 @@ class PyMoqDirectUsageTestCase(unittest.TestCase):
                     self.fail(ex)
 
                 self.assertEqual(response.status_code, 404)
+
+    def test_204_no_content_for_configuration_without_response(self):
+        mock = pymoq.Mock()
+        mock.create_stub('/books/2/adnotations')
+
+        with mock.run():
+            try:
+                response = requests.get('http://localhost:8080/books/2')
+            except Exception as ex:
+                self.fail(ex)
+
+            self.assertEqual(response.status_code, 404)
+
+            try:
+                response = requests.get('http://localhost:8080/books/2/adnotations')
+            except Exception as ex:
+                self.fail(ex)
+
+            self.assertEqual(response.status_code, 204)
