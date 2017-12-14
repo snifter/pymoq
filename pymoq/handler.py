@@ -15,7 +15,7 @@ class MockRequestHandlerFactory(object):
 
 class MockRequestHandler(BaseHTTPRequestHandler):
     def stubs(self):
-        raise NotImplementedError()  # overrider in DynamicMockRequestHandler
+        raise NotImplementedError()  # overriden in DynamicMockRequestHandler
 
     def do_GET(self):
         for stub in self.stubs():
