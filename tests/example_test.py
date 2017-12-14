@@ -39,3 +39,16 @@ class PyMoqDirectUsageTestCase(unittest.TestCase):
         with mock.run():
             response = requests.get('http://localhost:8080/books/234/chapters')
             self.assertEqual(response.status_code, 204)
+
+    def test_send_configured_response_body(self):
+        content = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+
+        mock = pymoq.Mock()
+        mock.create_stub('/books/2/description').response(content)
+
+        with mock.run():
+            response = requests.get('http://localhost:8080/books/2/description')
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.headers['content-type'], 'text/plain; charset=utf-8')
+            self.assertEqual(response.encoding, 'utf-8')
+            self.assertEqual(response.text, content)
