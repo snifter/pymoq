@@ -15,15 +15,15 @@ class Mock(object):
 
     @contextmanager
     def run(self):
-        handlerClass = MockRequestHandlerFactory(self.stubs).create_handler_class()
+        handler_class = MockRequestHandlerFactory(self.stubs).create_handler_class()
         server_address = ('', self.port)
-        server = HTTPServer(server_address, handlerClass)
-        serverThread = ServerThread(server)
-        serverThread.start()
+        server = HTTPServer(server_address, handler_class)
+        server_thread = ServerThread(server)
+        server_thread.start()
         try:
             yield
         finally:
-            serverThread.stop()
+            server_thread.stop()
 
     def create_stub(self, url):
         stub = RequestStub(url)
