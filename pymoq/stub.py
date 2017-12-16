@@ -13,18 +13,27 @@ class RequestStub(object):
     def handle_request(self, request_handler):
         self.__response.send(request_handler)
 
-    def response(self, content):
-        self.__response = Response(content=content)
+    def response(self, content, headers=None):
+        self.__response = Response(content=content, headers=headers)
 
 
 class Response(object):
-    def __init__(self, content=None):
+    def __init__(self, content=None, headers=None):
         self.__content = content
+        self.__headers = {}
+
+        if self.__content is not None:
+            self.__headers['content-type'] = 'text/plain; charset=utf-8'
+
+        if headers is not None:
+            self.__headers.update(headers)
 
     def send(self, request_handler):
         request_handler.send_response(self.status_code)
-        if self.__content is not None:
-            request_handler.send_header('content-type', 'text/plain; charset=utf-8')
+
+        for key, value in self.__headers.items():
+            request_handler.send_header(key, value)
+
         request_handler.end_headers()
 
         if self.__content is not None:
