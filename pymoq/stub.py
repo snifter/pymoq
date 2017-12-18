@@ -3,12 +3,18 @@ from http import HTTPStatus
 
 
 class RequestStub(object):
-    def __init__(self, url_pattern):
+    def __init__(self, url_pattern, method='GET'):
         self.__url_matcher = UrlMatcher(url_pattern)
         self.__response = Response()
+        self.__method = method.upper()
+
+    @property
+    def method(self):
+        return self.__method
 
     def can_handle(self, request_handler):
-        return self.__url_matcher.match(request_handler.path)
+        return request_handler.command.upper() == self.__method \
+            and self.__url_matcher.match(request_handler.path)
 
     def handle_request(self, request_handler):
         self.__response.send(request_handler)

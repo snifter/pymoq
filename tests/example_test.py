@@ -7,7 +7,7 @@ from pymoq import pymoq
 
 class PyMoqDirectUsageTestCase(unittest.TestCase):
 
-    def test_404_not_found_if_not_configured(self):
+    def test_501_if_not_configured(self):
         mock = pymoq.Mock()
 
         urls = [
@@ -19,16 +19,13 @@ class PyMoqDirectUsageTestCase(unittest.TestCase):
         with mock.run():
             for url in urls:
                 response = requests.get(url)
-                self.assertEqual(response.status_code, 404)
+                self.assertEqual(response.status_code, 501)
 
     def test_204_no_content_for_configuration_without_response(self):
         mock = pymoq.Mock()
         mock.create_stub('/books/2/chapters')
 
         with mock.run():
-            response = requests.get('http://localhost:8080/books/2')
-            self.assertEqual(response.status_code, 404)
-
             response = requests.get('http://localhost:8080/books/2/chapters')
             self.assertEqual(response.status_code, 204)
 
@@ -70,3 +67,27 @@ class PyMoqDirectUsageTestCase(unittest.TestCase):
             self.assertEqual(response.headers['X-Custom-Header'], 'An example')
             self.assertEqual(response.encoding, 'utf-8')
             self.assertEqual(response.text, content)
+
+    def test_stub_can_be_configured_to_handle_post_method(self):
+        mock = pymoq.Mock()
+        mock.create_stub('/books', method='post')
+
+        with mock.run():
+            response = requests.post('http://localhost:8080/books')
+            self.assertEqual(response.status_code, 204)
+
+    def test_stub_can_be_configured_to_handle_put_method(self):
+        mock = pymoq.Mock()
+        mock.create_stub('/books/1', method='put')
+
+        with mock.run():
+            response = requests.put('http://localhost:8080/books/1')
+            self.assertEqual(response.status_code, 204)
+
+    def test_stub_can_be_configured_to_handle_delete_method(self):
+        mock = pymoq.Mock()
+        mock.create_stub('/books/2', method='delete')
+
+        with mock.run():
+            response = requests.delete('http://localhost:8080/books/2')
+            self.assertEqual(response.status_code, 204)

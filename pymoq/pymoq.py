@@ -25,8 +25,8 @@ class Mock(object):
         finally:
             server_thread.stop()
 
-    def create_stub(self, url):
-        stub = RequestStub(url)
+    def create_stub(self, url, method='GET'):
+        stub = RequestStub(url, method=method)
         self.stubs.append(stub)
 
         return stub
