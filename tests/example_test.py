@@ -50,6 +50,14 @@ class PyMoqDirectUsageTestCase(unittest.TestCase):
             self.assertEqual(response.encoding, 'utf-8')
             self.assertEqual(response.text, content)
 
+    def test_stub_can_be_configured_with_http_status(self):
+        mock = pymoq.Mock()
+        mock.create_stub('/books').response(None, httpStatus=201)
+
+        with mock.run():
+            response = requests.get('http://localhost:8080/books/2/description')
+            self.assertEqual(response.status_code, 201)
+
     def test_stub_can_be_configured_with_response_headers(self):
         content = '{"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."}'
         headers = {
