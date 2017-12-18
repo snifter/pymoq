@@ -29,6 +29,14 @@ class PyMoqDirectUsageTestCase(unittest.TestCase):
             response = requests.get('http://localhost:8080/books/2/chapters')
             self.assertEqual(response.status_code, 204)
 
+    def test_port_can_be_configured(self):
+        mock = pymoq.Mock(port=8090)
+        mock.create_stub('/books/2/chapters')
+
+        with mock.run():
+            response = requests.get('http://localhost:8090/books/2/chapters')
+            self.assertEqual(response.status_code, 204)
+
     def test_stub_can_be_configured_with_regex_pattern(self):
         mock = pymoq.Mock()
         mock.create_stub('/books/[0-9]+/chapters')

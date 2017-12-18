@@ -8,9 +8,8 @@ from pymoq.stub import RequestStub
 
 class Mock(object):
 
-    port = 8080
-
-    def __init__(self):
+    def __init__(self, port=8080):
+        self.port = port
         self.stubs = []
 
     @contextmanager
