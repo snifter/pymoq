@@ -9,3 +9,10 @@ install:
   - pip install -r requirements.txt
 script:
   - python -m unittest discover -v -s ./tests -p "*_test.py"
+deploy:
+  provider: pypi
+  user: "snifter"
+  password: $PYPI_PASSWORD
+  distributions: "sdist bdist_wheel"
+  on:
+    tags: true
