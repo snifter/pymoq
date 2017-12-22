@@ -5,14 +5,15 @@ from pymoq.stub.matcher import MethodMatcher, UrlMatcher
 
 class RequestStub(object):
     def __init__(self, url_pattern, method='GET'):
-        self.__url_matcher = UrlMatcher(url_pattern)
-        self.__method_matcher = MethodMatcher(method)
+        self.__matchers = [
+            UrlMatcher(url_pattern),
+            MethodMatcher(method)
+        ]
         self.__response = Response()
         self.method = method.upper()
 
     def can_handle(self, request_handler):
-        return self.__method_matcher.match(request_handler.command) \
-            and self.__url_matcher.match(request_handler.path)
+        return all([matcher.match(request_handler) for matcher in self.__matchers])
 
     def handle_request(self, request_handler):
         self.__response.send(request_handler)

@@ -1,12 +1,7 @@
 import unittest
 
 from pymoq.stub.request import RequestStub
-
-
-class HandlerMock(object):
-    def __init__(self, path, method):
-        self.path = path
-        self.command = method
+from utils import HandlerMock
 
 
 class RequestStubTestCase(unittest.TestCase):
@@ -35,4 +30,10 @@ class RequestStubTestCase(unittest.TestCase):
         self.assertFalse(target.can_handle(request_handler))
 
         request_handler = HandlerMock('book/', 'put')
+        self.assertFalse(target.can_handle(request_handler))
+
+    def test_unable_handle_not_defined_url(self):
+        target = RequestStub('books/', method='post')
+
+        request_handler = HandlerMock('book/', 'post')
         self.assertFalse(target.can_handle(request_handler))
