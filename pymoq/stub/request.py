@@ -1,19 +1,17 @@
-import re
 from http import HTTPStatus
+
+from pymoq.stub.matcher import MethodMatcher, UrlMatcher
 
 
 class RequestStub(object):
     def __init__(self, url_pattern, method='GET'):
         self.__url_matcher = UrlMatcher(url_pattern)
+        self.__method_matcher = MethodMatcher(method)
         self.__response = Response()
-        self.__method = method.upper()
-
-    @property
-    def method(self):
-        return self.__method
+        self.method = method.upper()
 
     def can_handle(self, request_handler):
-        return request_handler.command.upper() == self.__method \
+        return self.__method_matcher.match(request_handler.command) \
             and self.__url_matcher.match(request_handler.path)
 
     def handle_request(self, request_handler):
@@ -52,11 +50,3 @@ class Response(object):
             return self.__status
 
         return HTTPStatus.NO_CONTENT if self.__content is None else HTTPStatus.OK
-
-
-class UrlMatcher(object):
-    def __init__(self, pattern):
-        self.__re = re.compile(pattern)
-
-    def match(self, url):
-        return self.__re.match(url) is not None

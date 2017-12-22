@@ -1,6 +1,6 @@
 import unittest
 
-from pymoq.stub import RequestStub
+from pymoq.stub.request import RequestStub
 
 
 class HandlerMock(object):

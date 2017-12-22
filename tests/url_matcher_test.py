@@ -1,6 +1,6 @@
 import unittest
 
-from pymoq.stub import UrlMatcher
+from pymoq.stub.matcher import UrlMatcher
 
 
 class UrlMatcherTestCase(unittest.TestCase):

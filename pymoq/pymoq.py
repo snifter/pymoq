@@ -3,7 +3,7 @@ from http.server import HTTPServer
 from threading import Thread
 
 from pymoq.handler import MockRequestHandlerFactory
-from pymoq.stub import RequestStub
+from pymoq.stub.request import RequestStub
 
 
 class Mock(object):
