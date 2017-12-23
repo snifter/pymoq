@@ -3,6 +3,9 @@ PyMoq
 .. image:: https://travis-ci.org/snifter/pymoq.svg?branch=master
     :target: https://travis-ci.org/snifter/pymoq
 
+.. image:: https://codecov.io/gh/snifter/pymoq/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/snifter/pymoq
+
 PyMoq is a tool for mocking HTTP services.
 
 
