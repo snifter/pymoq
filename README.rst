@@ -73,3 +73,51 @@ Example test
             self.assertEqual(response.headers['content-type'], 'application/json; charset=utf-8')
             self.assertEqual(response.headers['location'], 'http://localhost:8090/books/1')
             self.assertEqual(response.text, content)
+
+Configure with JSON file
+------------------------
+
+A mock can be configured with json file. A file should looks like:
+
+::
+
+  [{
+      "request": {
+          "url": "/books",
+          "method": "post"
+      },
+      "response": {
+          "content": {"author": "John Doe", "title": "Lorem ipsum dolor sit amet", "id": 1},
+          "headers": {
+              "content-type": "application/json; charset=utf-8",
+              "location": "http://localhost:8080/books/1"
+          },
+          "httpStatus": 201
+      }
+  }]
+
+Example test
+^^^^^^^^^^^^
+::
+
+  import unittest
+  import requests
+  from pymoq import pymoq
+
+
+  class JsonConfigTestCase(unittest.TestCase):
+      def test_load_config_from_file(self):
+          mock = pymoq.Mock()
+          mock.load('config.json')
+
+          with mock.run():
+              response = requests.post('http://localhost:8080/books',
+                          data={"author": "John Doe", "title": "Lorem ipsum dolor sit amet"})
+              self.assertEqual(response.status_code, 201)
+              self.assertEqual(response.headers['content-type'], 'application/json; charset=utf-8')
+              self.assertEqual(response.headers['location'], 'http://localhost:8080/books/1')
+
+              content = response.json()
+              self.assertEqual(content['author'], 'John Doe')
+              self.assertEqual(content['title'], 'Lorem ipsum dolor sit amet')
+              self.assertEqual(content['id'], 1)
