@@ -8,7 +8,9 @@ python:
 install:
   - pip install -r requirements.txt
 script:
-  - python -m unittest discover -v -s ./tests -p "*_test.py"
+  - python -m coverage run -m unittest discover -v -s ./tests -p "*_test.py"
+after_success:
+  - codecov
 deploy:
   provider: pypi
   user: "snifter"
