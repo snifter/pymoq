@@ -60,7 +60,7 @@ class PyMoqDirectUsageTestCase(unittest.TestCase):
 
     def test_stub_can_be_configured_with_http_status(self):
         mock = pymoq.Mock()
-        mock.create_stub('/books').response(None, httpStatus=201)
+        mock.create_stub('/books').response(None, http_status=201)
 
         with mock.run():
             response = requests.get('http://localhost:8080/books/2/description')
@@ -108,6 +108,7 @@ class PyMoqDirectUsageTestCase(unittest.TestCase):
             response = requests.delete('http://localhost:8080/books/2')
             self.assertEqual(response.status_code, 204)
 
+
 class ExampleUsageTestCase(unittest.TestCase):
     def test_direct_usage(self):
         content = '{"author": "John Doe", "title": "Lorem ipsum dolor sit amet", "id": 1}'
@@ -119,7 +120,7 @@ class ExampleUsageTestCase(unittest.TestCase):
         mock = pymoq.Mock(port=8090)
         mock.create_stub('/books', method='post').response(content,
                                                             headers=headers,
-                                                            httpStatus=201)
+                                                            http_status=201)
 
         with mock.run():
             response = requests.post('http://localhost:8090/books',

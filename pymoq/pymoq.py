@@ -3,6 +3,7 @@ from http.server import HTTPServer
 from threading import Thread
 
 from pymoq.handler import MockRequestHandlerFactory
+from pymoq.stub.loader import ConfigLoader
 from pymoq.stub.request import RequestStub
 
 
@@ -29,6 +30,12 @@ class Mock(object):
         self.stubs.append(stub)
 
         return stub
+
+    def load(self, path_to_file):
+        loader = ConfigLoader(path_to_file)
+        stubs = loader.load()
+
+        self.stubs.extend(stubs)
 
 
 class ServerThread(Thread):

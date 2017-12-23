@@ -42,7 +42,7 @@ Headers has to be dictionary with header name as its key.
 
   mock.create_stub('/books', method='post').response('...',
                                                      headers={'name': 'value'},
-                                                     httpStatus=201)
+                                                     http_status=201)
 
 
 Example test
@@ -64,7 +64,7 @@ Example test
         mock = pymoq.Mock(port=8090)
         mock.create_stub('/books', method='post').response(content,
                                                           headers=headers,
-                                                          httpStatus=201)
+                                                          http_status=201)
 
         with mock.run():
             response = requests.post('http://localhost:8090/books',

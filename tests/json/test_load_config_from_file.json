@@ -1,0 +1,14 @@
+[{
+    "request": {
+        "url": "/books",
+        "method": "post"
+    },
+    "response": {
+        "content": {"author": "John Doe", "title": "Lorem ipsum dolor sit amet", "id": 1},
+        "headers": {
+            "content-type": "application/json; charset=utf-8",
+            "location": "http://localhost:8080/books/1"
+        },
+        "httpStatus": 201
+    }
+}]

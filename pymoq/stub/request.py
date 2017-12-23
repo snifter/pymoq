@@ -18,15 +18,15 @@ class RequestStub(object):
     def handle_request(self, request_handler):
         self.__response.send(request_handler)
 
-    def response(self, content, headers=None, httpStatus=None):
-        self.__response = Response(content=content, headers=headers, httpStatus=httpStatus)
+    def response(self, content, headers=None, http_status=None):
+        self.__response = Response(content=content, headers=headers, http_status=http_status)
 
 
 class Response(object):
-    def __init__(self, content=None, headers=None, httpStatus=None):
+    def __init__(self, content=None, headers=None, http_status=None):
         self.__content = content
         self.__headers = {}
-        self.__status = httpStatus
+        self.__status = http_status
 
         if self.__content is not None:
             self.__headers['content-type'] = 'text/plain; charset=utf-8'
