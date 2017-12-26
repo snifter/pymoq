@@ -32,11 +32,16 @@ class ConfigLoader(object):
 
         stub = RequestStub(url, method=method)
 
-        response = item['response']
-        if response is None:
+        if 'response' not in item:
             return stub
 
-        content = json.dumps(response['content']) if 'content' in response else None
+        response = item['response']
+
+        content = response['content'] if 'content' in response else None
+
+        if isinstance(content, dict):
+            content = json.dumps(response['content'])
+
         headers = response['headers'] if 'headers' in response else None
         http_status = response['httpStatus'] if 'httpStatus' in response else None
 

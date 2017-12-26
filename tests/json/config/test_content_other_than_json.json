@@ -1,0 +1,9 @@
+[{
+    "request": {
+        "url": "/books",
+        "method": "get"
+    },
+    "response": {
+        "content": "Lorem ipsum dolor sit amet"
+    }
+}]
