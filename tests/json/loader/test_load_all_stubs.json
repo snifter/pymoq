@@ -1,0 +1,16 @@
+[{
+    "request": {
+        "url": "/books",
+        "method": "get"
+    }
+}, {
+    "request": {
+        "url": "/books/1",
+        "method": "get"
+    }
+}, {
+    "request": {
+        "url": "/books/2",
+        "method": "get"
+    }
+}]
