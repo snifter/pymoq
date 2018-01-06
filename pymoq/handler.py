@@ -8,16 +8,16 @@ class MockRequestHandlerFactory(object):
         self.stubs = stubs
 
     def create_handler_class(self):
-        methodsDict = {
+        methods_dict = {
             'stubs': lambda x: self.stubs
         }
 
         for stub in self.stubs:
             key = 'do_{method}'.format(method=stub.method)
-            if key not in methodsDict:
-                methodsDict[key] = lambda x: x.handleRequest()
+            if key not in methods_dict:
+                methods_dict[key] = lambda x: x.handleRequest()
 
-        return type('DynamicMockRequestHandler', (MockRequestHandler,), methodsDict)
+        return type('DynamicMockRequestHandler', (MockRequestHandler,), methods_dict)
 
 
 class MockRequestHandler(BaseHTTPRequestHandler):
