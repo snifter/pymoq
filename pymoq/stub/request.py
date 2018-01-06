@@ -12,14 +12,21 @@ class RequestStub(object):
         self.__response = Response()
         self.method = method.upper()
 
+        self.__request_counter = 0
+
     def can_handle(self, request_handler):
         return all([matcher.match(request_handler) for matcher in self.__matchers])
 
     def handle_request(self, request_handler):
+        self.__request_counter += 1
         self.__response.send(request_handler)
 
     def response(self, content, headers=None, http_status=None):
         self.__response = Response(content=content, headers=headers, http_status=http_status)
+
+    def assert_requested_once(self):
+        if self.__request_counter != 1:
+            raise AssertionError('Stub was requested {} times'.format(self.__request_counter))
 
 
 class Response(object):
