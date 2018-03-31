@@ -19,3 +19,16 @@ class RequestRecorderTestCase(unittest.TestCase):
             target.record(request_handler)
 
         self.assertEqual(count, target.count)
+
+    def test_requests_with_header_returns_filtered_requests(self):
+        target = RequestRecorder()
+
+        target.record(HandlerMock('/books/30', 'GET'))
+        target.record(HandlerMock('/books/31', 'GET', headers={'X-Test': 'valid'}))
+        target.record(HandlerMock('/books/32', 'GET', headers={'X-Test': 'invalid'}))
+        target.record(HandlerMock('/books/33', 'GET', headers={'X-Test-Other': 'valid'}))
+
+        actual = target.requests_with_header('X-Test', 'valid')
+
+        self.assertEqual(1, len(actual))
+        self.assertEqual('/books/31', actual[0].url)

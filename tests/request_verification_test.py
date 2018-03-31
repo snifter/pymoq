@@ -69,3 +69,26 @@ class RequestVerificationTestCase(unittest.TestCase):
 
         with self.assertRaises(AssertionError):
             stub.assert_requested_times(2)
+
+    def test_assert_requested_with_header_not_fails_if_any_request_had_valid_header(self):
+        mock = pymoq.Mock()
+        stub = mock.create_stub('/books')
+
+        with mock.run():
+            requests.get('http://localhost:8080/books', headers={'X-Test': 'false'})
+            requests.get('http://localhost:8080/books', headers={'X-Test': 'true'})
+            requests.get('http://localhost:8080/books', headers={'X-Test': 'false'})
+
+        stub.assert_requested_with_header('X-Test', 'true')
+
+    def test_assert_requested_with_header_fails_if_no_request_had_valid_header(self):
+        mock = pymoq.Mock()
+        stub = mock.create_stub('/books')
+
+        with mock.run():
+            requests.get('http://localhost:8080/books', headers={'X-Test': 'false'})
+            requests.get('http://localhost:8080/books', headers={'X-Test': 'false'})
+            requests.get('http://localhost:8080/books', headers={'X-Test-Other': 'false'})
+
+        with self.assertRaises(AssertionError):
+            stub.assert_requested_with_header('X-Test', 'true')

@@ -33,6 +33,10 @@ class RequestStub(object):
             raise AssertionError('Stub was requested {} times, but expected {}'
                                  .format(self.__request_recorder.count, times))
 
+    def assert_requested_with_header(self, header, value):
+        if not self.__request_recorder.requests_with_header(header, value):
+            raise AssertionError('Stub was not requested with {header}: {value}'.format(header=header, value=value))
+
 
 class Response(object):
     def __init__(self, content=None, headers=None, http_status=None):
