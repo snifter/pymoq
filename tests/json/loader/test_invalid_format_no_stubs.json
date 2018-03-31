@@ -1,0 +1,6 @@
+[{
+    "req": {
+        "url": "/books/2",
+        "method": "get"
+    }
+}]

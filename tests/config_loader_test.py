@@ -16,6 +16,13 @@ class ConfigLoaderTestCase(unittest.TestCase):
 
         self.assertEqual(len(stubs), 3)
 
+    def test_invalid_format_no_stubs(self):
+        path_to_file = path.join(self.dir_path, 'test_invalid_format_no_stubs.json')
+        loader = ConfigLoader(path_to_file)
+        stubs = loader.load()
+
+        self.assertEqual(len(stubs), 0)
+
     def test_url_can_be_regex_pattern(self):
         path_to_file = path.join(self.dir_path, 'test_url_can_be_regex_pattern.json')
         loader = ConfigLoader(path_to_file)
