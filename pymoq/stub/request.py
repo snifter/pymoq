@@ -26,8 +26,12 @@ class RequestStub(object):
         self.__response = Response(content=content, headers=headers, http_status=http_status)
 
     def assert_requested_once(self):
-        if self.__request_recorder.count != 1:
-            raise AssertionError('Stub was requested {} times'.format(self.__request_recorder.count))
+        self.assert_requested_times(1)
+
+    def assert_requested_times(self, times):
+        if self.__request_recorder.count != times:
+            raise AssertionError('Stub was requested {} times, but expected {}'
+                                 .format(self.__request_recorder.count, times))
 
 
 class Response(object):

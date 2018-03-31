@@ -37,3 +37,35 @@ class RequestVerificationTestCase(unittest.TestCase):
 
         with self.assertRaises(AssertionError):
             stub.assert_requested_once()
+
+    def test_assert_requested_times_not_fails_for_valid_count(self):
+        mock = pymoq.Mock()
+        stub = mock.create_stub('/books')
+
+        with mock.run():
+            requests.get('http://localhost:8080/books')
+            requests.get('http://localhost:8080/books')
+
+        stub.assert_requested_times(2)
+
+    def test_assert_requested_times_fails_if_not_enough_requests(self):
+        mock = pymoq.Mock()
+        stub = mock.create_stub('/books')
+
+        with mock.run():
+            requests.get('http://localhost:8080/books')
+
+        with self.assertRaises(AssertionError):
+            stub.assert_requested_times(2)
+
+    def test_assert_requested_times_fails_if_to_many_requests(self):
+        mock = pymoq.Mock()
+        stub = mock.create_stub('/books')
+
+        with mock.run():
+            requests.get('http://localhost:8080/books')
+            requests.get('http://localhost:8080/books')
+            requests.get('http://localhost:8080/books')
+
+        with self.assertRaises(AssertionError):
+            stub.assert_requested_times(2)
