@@ -10,7 +10,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='PyMoq',
-    version='0.3.1',
+    version='0.3.2',
     description='An API mocking tool',
     long_description=long_description,
     url='https://github.com/snifter/pymoq',
