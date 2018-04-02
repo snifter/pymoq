@@ -127,3 +127,31 @@ Example test
               self.assertEqual(content['author'], 'John Doe')
               self.assertEqual(content['title'], 'Lorem ipsum dolor sit amet')
               self.assertEqual(content['id'], 1)
+
+Request verifications
+---------------------
+PyMoq can be used to validate requests.
+
+Example test
+^^^^^^^^^^^^
+::
+
+  import unittest
+  import requests
+  from pymoq import pymoq
+
+
+  class RequestVerificationTestCase(unittest.TestCase):
+      def test_request(self):
+          mock = pymoq.Mock()
+          stub = mock.create_stub('/books', method='post')
+
+          with mock.run():
+              requests.post('http://localhost:8080/books',
+                            json={'firstName': 'John', 'lastName': 'Doe'}
+                            headers={'content-type': 'application/json'})
+
+          stub.assert_requested_once()
+          stub.assert_requested_with_header('content-type', 'application/json')
+          stub.assert_requested_body_contains('Doe')
+
