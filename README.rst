@@ -1,6 +1,6 @@
 PyMoq
 =====
-.. image:: https://travis-ci.org/snifter/pymoq.svg?branch=master
+.. image:: https://travis-ci.org/snifter/pymoq.svg?branch=0.3.1
     :target: https://travis-ci.org/snifter/pymoq
 
 .. image:: https://codecov.io/gh/snifter/pymoq/branch/master/graph/badge.svg
