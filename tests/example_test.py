@@ -20,7 +20,7 @@ class ExampleUsageTestCase(unittest.TestCase):
 
         with mock.run():
             response = requests.post('http://localhost:8090/books',
-                        data={"author": "John Doe", "title": "Lorem ipsum dolor sit amet"})
+                                     data={"author": "John Doe", "title": "Lorem ipsum dolor sit amet"})
             self.assertEqual(response.status_code, 201)
             self.assertEqual(response.headers['content-type'], 'application/json; charset=utf-8')
             self.assertEqual(response.headers['location'], 'http://localhost:8090/books/1')

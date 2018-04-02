@@ -37,6 +37,10 @@ class RequestStub(object):
         if not self.__request_recorder.requests_with_header(header, value):
             raise AssertionError('Stub was not requested with {header}: {value}'.format(header=header, value=value))
 
+    def assert_requested_body_contains(self, content):
+        if not self.__request_recorder.requests_with_content(content):
+            raise AssertionError('Stub was not requested with body content: {}'.format(content))
+
 
 class Response(object):
     def __init__(self, content=None, headers=None, http_status=None):

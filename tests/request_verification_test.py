@@ -92,3 +92,26 @@ class RequestVerificationTestCase(unittest.TestCase):
 
         with self.assertRaises(AssertionError):
             stub.assert_requested_with_header('X-Test', 'true')
+
+    def test_assert_requested_body_contains_not_fails_if_any_request_contains_content(self):
+        mock = pymoq.Mock()
+        stub = mock.create_stub('/books', method='post')
+
+        with mock.run():
+            requests.post('http://localhost:8080/books', json={'firstName': 'Wolfgang', 'lastName': 'Mozart'})
+            requests.post('http://localhost:8080/books', json={'firstName': 'Jan', 'lastName': 'Bach'})
+            requests.post('http://localhost:8080/books', json={'firstName': 'Ludwig', 'lastName': 'Beethoven'})
+
+        stub.assert_requested_body_contains('Bach')
+
+    def test_assert_requested_body_contains_fails_if_no_request_contains_content(self):
+        mock = pymoq.Mock()
+        stub = mock.create_stub('/books', method='post')
+
+        with mock.run():
+            requests.post('http://localhost:8080/books', json={'firstName': 'Wolfgang', 'lastName': 'Mozart'})
+            requests.post('http://localhost:8080/books', json={'firstName': 'Jan', 'lastName': 'Bach'})
+            requests.post('http://localhost:8080/books', json={'firstName': 'Ludwig', 'lastName': 'Beethoven'})
+
+        with self.assertRaises(AssertionError):
+            stub.assert_requested_body_contains('Davies')
